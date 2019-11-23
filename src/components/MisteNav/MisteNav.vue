@@ -119,16 +119,13 @@ export default {
 .miste-nav {
   padding-top: 46px;
   background-color: #fff;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   .swiper-slide {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
     text-align: center;
-    .swiper-pagination {
-      display: block;
-    }
     a {
       text-decoration: none;
     }
@@ -149,6 +146,10 @@ export default {
         font-size: 12px;
       }
     }
+  }
+  .swiper-pagination {
+    position: static;
+    margin-top: 10px;
   }
 }
 </style>
