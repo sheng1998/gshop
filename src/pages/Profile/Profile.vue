@@ -4,7 +4,7 @@
       <span class="center" slot="center">我的</span>
     </Header>
     <div class="body">
-      <div class="sign">
+      <router-link to="/login" class="sign">
         <div class="portrait">
           <i class="iconfont icon-person"></i>
         </div>
@@ -22,7 +22,7 @@
             <i class="iconfont icon-right"></i>
           </span>
         </div>
-      </div>
+      </router-link>
       <div class="information">
         <div class="balance">
           <a href="javascript:;">
