@@ -103,8 +103,8 @@ import 'swiper/css/swiper.min.css'
 
 export default {
   mounted () {
-    new Swiper ('.swiper-container', {
-      direction: 'vertical',
+    /* eslint-disable no-new */
+    new Swiper('.swiper-container', {
       loop: true,
 
       pagination: {
@@ -126,6 +126,9 @@ export default {
     align-items: center;
     flex-wrap: wrap;
     text-align: center;
+    .swiper-pagination {
+      display: block;
+    }
     a {
       text-decoration: none;
     }
