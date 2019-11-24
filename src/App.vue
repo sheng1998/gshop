@@ -7,12 +7,17 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+import { async } from 'q'
 
 export default {
-  data () {
-    return {
-
-    }
+  mounted () {
+    new Promise((resolve, reject) => {
+      this.$store.dispatch('getlongitudeAndLatitude')
+      resolve()
+    }).then((res) => {
+      console.log(res)
+      this.$store.dispatch('getAddress')
+    })
   },
 
   components: {
