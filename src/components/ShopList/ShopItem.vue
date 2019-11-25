@@ -1,49 +1,49 @@
 <template>
   <div class="shop-item">
     <div class="shop-img">
-      <img src='./img/1.jpg' alt />
+      <img :src='baseImageUrl + shop.image_path' alt />
     </div>
     <div class="details">
       <div class="shop-business">
-        <div>
+        <div class="shop-name ellipsis">
           <span class="explain">品牌</span>
-          <span class="name ellipsis">壹家饭</span>
+          <span class="name">{{ shop.name }}</span>
         </div>
-        <div>
+        <div class="shop-ul">
           <ul class="ul">
-            <li class="supports">保</li>
-            <li class="supports">准</li>
-            <li class="supports">票</li>
+            <li class="supports" v-for="(support, index) in shop.supports" :key="index">
+              {{ support.icon_name }}
+            </li>
           </ul>
         </div>
       </div>
       <div class="shop-order-relevant">
         <div>
-          <span class="star">
-            <i class="iconfont icon-star"></i>
-            <i class="iconfont icon-star"></i>
-            <i class="iconfont icon-star"></i>
-            <i class="iconfont icon-star"></i>
-            <i class="iconfont icon-star"></i>
-          </span>
-          <span class="score">4.2</span>
-          <span>月售102单</span>
+          <span class="score">{{ shop.rating }}</span>
+          <span>月售{{ shop.recent_order_num }}单</span>
         </div>
         <div>
-          <span class="delivery">硅谷专送</span>
+          <span class="delivery">{{ shop.delivery_mode.text }}</span>
         </div>
       </div>
       <div class="shop-delivery-msg">
-        <span>¥20起送</span>
+        <span>¥{{ shop.float_minimum_order_amount }}起送</span>
         <span class="segmentation">/</span>
-        <span>配送费约¥5</span>
+        <span>配送费约¥{{ shop.float_delivery_fee }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      baseImageUrl: 'http://localhost:3000/img/'
+    }
+  },
+  props: ['shop']
+}
 </script>
 
 <style lang="less" scoped>
@@ -65,24 +65,31 @@ export default {}
     .shop-business {
         display: flex;
         justify-content: space-between;
-      .explain {
-        background-color: #FFD930;
-        border-radius: 2px;
-        padding: 1px;
-      }
-      .name {
-        color: #333333;
-        font-size: 16px;
-        font-weight: bold;
-      }
-      .ul {
-        li {
-          list-style: none;
-          display: inline-block;
+      .shop-name {
+        flex: 6;
+        .explain {
+          background-color: #FFD930;
           border-radius: 2px;
-          font-size: 10px;
-          color: #999;
-          border: 1px solid #f1f1f1;
+          padding: 1px;
+        }
+        .name {
+          color: #333333;
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+
+      .shop-ul {
+        flex: 1;
+        .ul {
+          li {
+            list-style: none;
+            display: inline-block;
+            border-radius: 2px;
+            font-size: 10px;
+            color: #999;
+            border: 1px solid #f1f1f1;
+          }
         }
       }
     }
@@ -92,24 +99,6 @@ export default {}
       font-size: 10px;
       color: #666;
       padding: 15px 0;
-      .star {
-        i {
-          font-size: 14px;
-          color: #7e8c8d;
-          &:nth-child(1) {
-            color: rgb(255, 154, 13);
-          }
-          &:nth-child(2) {
-            color: rgb(255, 154, 13);
-          }
-          &:nth-child(3) {
-            color: rgb(255, 154, 13);
-          }
-          &:nth-child(4) {
-            color: rgb(255, 154, 13);
-          }
-        }
-      }
       .score {
         color: #ff6000;
       }

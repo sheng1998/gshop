@@ -6,15 +6,38 @@
       </span>
       <span class="near-business">附近商家</span>
     </div>
-    <div v-for="item in 10" :key="item">
-      <ShopItem></ShopItem>
+    <div v-if="shops.length">
+      <div v-for="(shop, index) in shops" :key="index">
+        <ShopItem :shop='shop'></ShopItem>
+      </div>
+    </div>
+    <div v-else>
+      <ul>
+        <li v-for="(item, index) in 10" :key="index">
+          <img style="width: 100%;" src="./images/shop_back.svg" alt="">
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 import ShopItem from './ShopItem.vue'
+import {mapActions, mapState} from 'vuex'
+
 export default {
+  mounted () {
+    this.getShops()
+  },
+
+  computed: {
+    ...mapState(['shops'])
+  },
+
+  methods: {
+    ...mapActions(['getShops'])
+  },
+
   components: {
     ShopItem
   }

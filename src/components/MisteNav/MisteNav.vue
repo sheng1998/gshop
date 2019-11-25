@@ -1,100 +1,22 @@
 <template>
   <div class="miste">
-    <div class="miste-nav">
+    <div class="miste-nav" v-if="categorys.length">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:;" class="link_to_food">
+          <div class="swiper-slide" v-for="(category, index) in categoryArr" :key="index">
+            <a href="javascript:;" class="link_to_food" v-for="(item, index) in category" :key="index">
               <div class="food_container">
-                <img src="../../../static/img/nav/1.jpg" alt />
+                <img :src="baseImageUrl + item.image_url" alt />
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/2.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/3.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/4.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/5.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/6.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/7.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/8.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-          </div>
-
-          <div class="swiper-slide">
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/9.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/10.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/11.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/12.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/13.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="../../../static/img/nav/14.jpg" alt />
-              </div>
-              <span>甜品饮品</span>
+              <span>{{ item.title }}</span>
             </a>
           </div>
         </div>
         <div class="swiper-pagination"></div>
       </div>
+    </div>
+    <div v-else>
+      <img src="./images/msite_back.svg" alt="">
     </div>
     <div class="shoplist">
       <ShopList></ShopList>
@@ -107,9 +29,17 @@ import Swiper from 'swiper'
 import 'swiper/css/swiper.min.css'
 
 import ShopList from '../../components/ShopList/ShopList.vue'
+import {mapActions, mapState} from 'vuex'
 
 export default {
+  data () {
+    return {
+      baseImageUrl: 'https://fuss10.elemecdn.com'
+    }
+  },
+
   mounted () {
+    this.getCategorys()
     /* eslint-disable no-new */
     new Swiper('.swiper-container', {
       loop: true,
@@ -118,6 +48,30 @@ export default {
         el: '.swiper-pagination'
       }
     })
+  },
+
+  computed: {
+    ...mapState(['categorys']),
+
+    categoryArr () {
+      let arr = [] // 二维数组
+      let minArr = [] // 小数组，长度最大为 8
+
+      this.categorys.forEach(el => {
+        if (minArr.length === 8) {
+          minArr = []
+        }
+        if (minArr.length === 0) {
+          arr.push(minArr)
+        }
+        minArr.push(el)
+      })
+      return arr
+    }
+  },
+
+  methods: {
+    ...mapActions(['getCategorys'])
   },
 
   components: {

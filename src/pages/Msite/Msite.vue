@@ -4,7 +4,7 @@
       <span class="left" slot="left">
         <i class="iconfont icon-top-search"></i>
       </span>
-      <span class="center ellipsis" slot="center">广东省湛江市麻章区海大路1号广东海洋大学海思B220</span>
+      <span class="center ellipsis" slot="center">{{ address.city + address.name }}</span>
       <span class="right" slot="right">
         <a href="javascript:;">登录</a>&nbsp;|&nbsp;
         <a href="javascript:;">注册</a>
@@ -17,12 +17,19 @@
 <script>
 import Header from '../../components/Header/Header.vue'
 import MisteNav from '../../components/MisteNav/MisteNav.vue'
+import {mapActions, mapState} from 'vuex'
 
 export default {
-  data () {
-    return {
+  computed: {
+    ...mapState(['address'])
+  },
 
-    }
+  mounted () {
+    this.getAddress()
+  },
+
+  methods: {
+    ...mapActions(['getAddress'])
   },
 
   components: {
