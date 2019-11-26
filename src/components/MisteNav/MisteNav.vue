@@ -18,17 +18,12 @@
     <div v-else>
       <img src="./images/msite_back.svg" alt="">
     </div>
-    <div class="shoplist">
-      <ShopList></ShopList>
-    </div>
   </div>
 </template>
 
 <script>
 import Swiper from 'swiper'
 import 'swiper/css/swiper.min.css'
-
-import ShopList from '../../components/ShopList/ShopList.vue'
 import {mapActions, mapState} from 'vuex'
 
 export default {
@@ -40,19 +35,10 @@ export default {
 
   mounted () {
     this.getCategorys()
-    /* eslint-disable no-new */
-    new Swiper('.swiper-container', {
-      loop: true,
-
-      pagination: {
-        el: '.swiper-pagination'
-      }
-    })
   },
 
   computed: {
     ...mapState(['categorys']),
-
     categoryArr () {
       let arr = [] // 二维数组
       let minArr = [] // 小数组，长度最大为 8
@@ -70,12 +56,22 @@ export default {
     }
   },
 
-  methods: {
-    ...mapActions(['getCategorys'])
+  watch: {
+    categorys (value) {
+      this.$nextTick(() => {
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container', {
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        })
+      })
+    }
   },
 
-  components: {
-    ShopList
+  methods: {
+    ...mapActions(['getCategorys'])
   }
 }
 </script>
@@ -117,11 +113,6 @@ export default {
       position: static;
       margin-top: 10px;
     }
-  }
-  .shoplist {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #fff;
   }
 }
 </style>

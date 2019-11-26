@@ -8,39 +8,42 @@
         <div class="login_header">
           <h2 class="login_logo">硅谷外卖</h2>
           <div class="login_header_title">
-            <a href="javascript:;" class="on">短信登录</a>
-            <a href="javascript:;">密码登录</a>
+            <a href="javascript:;" :class="{on: loginWay}" @click="loginWay=true">短信登录</a>
+            <a href="javascript:;" :class="{on: !loginWay}" @click="loginWay=false">密码登录</a>
           </div>
         </div>
         <div class="login_content">
-          <form>
-            <div class="on">
+          <form @submit.prevent="login">
+            <div :class="{on: loginWay}">
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机号" />
-                <button disabled="disabled" class="get_verification">获取验证码</button>
+                <input type="text" maxlength="11" v-model="phone" placeholder="手机号" />
+                <button :disabled="!rightPhone" class="get_verification" :class="{right_phone: rightPhone&&!computeTime}" @click.prevent="getCode()">
+                  {{ computeTime > 0 ? `已发送(${computeTime}s)` : '获取验证码' }}
+                </button>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码" />
+                <input type="text" maxlength="6" v-model="code" placeholder="验证码" />
               </section>
               <section class="login_hint">
                 温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
                 <a href="javascript:;">《用户服务协议》</a>
               </section>
             </div>
-            <div>
+            <div :class="{on: !loginWay}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" />
+                  <input type="text" maxlength="20" v-model="name" placeholder="手机/邮箱/用户名" />
                 </section>
                 <section class="login_verification">
-                  <input type="tel" maxlength="8" placeholder="密码" />
-                  <div class="switch_button off">
+                  <input type="password"  maxlength="20" placeholder="密码" v-if="showPwd" v-model="pwd"/>
+                  <input type="text" maxlength="20" placeholder="密码" v-else v-model="pwd"/>
+                  <div class="switch_button" :class="showPwd?'off':'on'" @click="showPwd=!showPwd">
                     <div class="switch_circle"></div>
-                    <span class="switch_text">...</span>
+                    <span class="switch_text">{{ showPwd ? '...' : 'abc' }}</span>
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码" />
+                  <input type="text" v-model="captcha" maxlength="4" placeholder="验证码" />
                   <img class="get_verification" src="./img/captcha.svg" alt="captcha" />
                 </section>
               </section>
@@ -51,15 +54,93 @@
         </div>
       </div>
     </section>
+    <AlertTip :alertText="alertText" v-show="alertShow" @closeTip="closeTip"></AlertTip>
   </div>
 </template>
 
 <script>
-import Header from '../../components/Header/Header.vue'
+import AlertTip from '../../components/AlertTip/AlertTip.vue'
 
 export default {
+  data () {
+    return {
+      loginWay: true, // true 代表短信登录，false 代表密码
+      computeTime: 0, // 倒计时
+      showPwd: true, // 是否显示密码
+      phone: '', // 手机号
+      code: '', // 短信验证码
+      name: '', // 用户名
+      pwd: '', // 密码
+      captcha: '', // 图形验证码
+      alertText: '', // 弹窗文本
+      alertShow: false // 弹窗显示隐藏
+    }
+  },
+
+  methods: {
+    // 异步获取短信验证码
+    getCode () {
+      // 如果当前没有计时
+      if (!this.computeTime) {
+        // 启动定时器
+        this.computeTime = 30
+        const intervalId = setInterval(() => {
+          this.computeTime--
+          if (this.computeTime <= 0) {
+            clearInterval(intervalId)
+          }
+        }, 1000)
+      }
+    },
+
+    // 异步登录
+    login () {
+      // 前台表单验证
+      if (this.loginWay) { // 短信登陆
+        const {code} = this
+        if (!this.rightPhone) {
+          // 手机号不正确
+          this.showAlert('手机号不正确')
+        } else if (!/^\d{6}$/.test(code)) {
+          // 验证码必须是六位数
+          this.showAlert('验证码必须是六位数')
+        }
+      } else { // 密码登陆
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+          this.showAlert('用户名必须指定')
+        } else if (!pwd) {
+          // 密码必须指定
+          this.showAlert('密码必须指定')
+        } else if (!captcha) {
+          // 验证码必须指定
+          this.showAlert('验证码必须指定')
+        }
+      }
+    },
+
+    // 显示弹窗
+    showAlert (alertText) {
+      this.alertText = alertText
+      this.alertShow = true
+    },
+
+    // 关闭弹窗
+    closeTip () {
+      this.alertText = ''
+      this.alertShow = false
+    }
+  },
+
+  computed: {
+    rightPhone () {
+      return /^1\d{10}$/.test(this.phone)
+    }
+  },
+
   components: {
-    Header
+    AlertTip
   }
 }
 </script>
@@ -158,6 +239,8 @@ export default {
                 color: #ccc;
                 font-size: 14px;
                 background: transparent;
+              }.right_phone {
+                color: black;
               }
             }
 
@@ -185,7 +268,9 @@ export default {
 
                 &.off {
                   background: #fff;
-
+                  .switch_circle {
+                    left: -1px;
+                  }
                   .switch_text {
                     float: right;
                     color: #ddd;
@@ -194,12 +279,18 @@ export default {
 
                 &.on {
                   background: #02a774;
+                  .switch_circle {
+                    right: -1px;
+                  }
+                  .switch_text {
+                    float: left;
+                    color: #ddd;
+                  }
                 }
 
                 > .switch_circle {
                   position: absolute;
                   top: -1px;
-                  left: -1px;
                   width: 16px;
                   height: 16px;
                   border: 1px solid #ddd;

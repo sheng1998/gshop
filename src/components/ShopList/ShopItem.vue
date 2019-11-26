@@ -19,6 +19,7 @@
       </div>
       <div class="shop-order-relevant">
         <div>
+          <Star :score="shop.rating" :size="24"></Star>
           <span class="score">{{ shop.rating }}</span>
           <span>月售{{ shop.recent_order_num }}单</span>
         </div>
@@ -36,13 +37,18 @@
 </template>
 
 <script>
+import Star from '../Star/Star.vue'
+
 export default {
   data () {
     return {
       baseImageUrl: 'http://localhost:3000/img/'
     }
   },
-  props: ['shop']
+  props: ['shop'],
+  components: {
+    Star
+  }
 }
 </script>
 
@@ -101,6 +107,7 @@ export default {
       padding: 15px 0;
       .score {
         color: #ff6000;
+        padding-left: 5px;
       }
       .delivery {
         padding: 1px;

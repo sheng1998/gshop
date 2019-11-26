@@ -1,23 +1,35 @@
 <template>
-  <div>
-    <span class="star" :class="star-24">
-      <span class="star-item on"></span>
-      <span class="star-item on"></span>
-      <span class="star-item on"></span>
-      <span class="star-item half"></span>
-      <span class="star-item off"></span>
-      <!-- <i class="iconfont icon-star"></i>
-      <i class="iconfont icon-star"></i>
-      <i class="iconfont icon-star"></i>
-      <i class="iconfont icon-star"></i>
-      <i class="iconfont icon-star"></i> -->
-    </span>
-  </div>
+  <span class="star" :class="'star-' + size">
+    <span class="star-item" v-for="(sc, index) in starClasses" :class="sc" :key="index"></span>
+  </span>
 </template>
 
 <script>
 export default {
-    props: ['score', 'size']
+  data () {
+    return {}
+  },
+
+  computed: {
+    starClasses () {
+      const score = parseFloat(this.score)
+      let scs = [] // 保存星星类名
+      let sn = 5 // 星星总个数为 5
+      for (let i = 1; i <= parseInt(score); i++) {
+        sn--
+        scs.push('on')
+      }
+      if (score % 1 >= 0.5) {
+        sn--
+        scs.push('half')
+      }
+      for (let j = 0; j < sn; j++) {
+        scs.push('off')
+      }
+      return scs
+    }
+  },
+  props: ['score', 'size']
 }
 </script>
 
@@ -68,17 +80,17 @@ export default {
       &.on {
         .bg-image('./images/star36_on');
       }
-      
+
       &.half {
         .bg-image('./images/star36_half');
       }
-      
+
       &.off {
         .bg-image('./images/star36_off');
       }
     }
   }
-  
+
   &.star-24 {
     .star-item {
       width: 10px;
@@ -87,15 +99,15 @@ export default {
       background-size: 10px 10px;&:last-child {
         margin-right: 0;
       }
-      
+
       &.on {
         .bg-image('./images/star24_on');
       }
-      
+
       &.half {
         .bg-image('./images/star24_half');
       }
-      
+
       &.off {
         .bg-image('./images/star24_off');
       }

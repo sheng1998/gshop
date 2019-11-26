@@ -11,12 +11,16 @@
       </span>
     </Header>
     <MisteNav class="nav"></MisteNav>
+    <div class="shoplist">
+      <ShopList></ShopList>
+    </div>
   </div>
 </template>
 
 <script>
 import Header from '../../components/Header/Header.vue'
 import MisteNav from '../../components/MisteNav/MisteNav.vue'
+import ShopList from '../../components/ShopList/ShopList.vue'
 import {mapActions, mapState} from 'vuex'
 
 export default {
@@ -34,10 +38,18 @@ export default {
 
   components: {
     Header,
-    MisteNav
+    MisteNav,
+    ShopList
   }
 }
 </script>
 
 <style lang="less" scoped>
+.msite {
+  .shoplist {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+  }
+}
 </style>
