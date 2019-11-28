@@ -7,9 +7,9 @@
       <span class="near-business">附近商家</span>
     </div>
     <div v-if="shops.length">
-      <div v-for="(shop, index) in shops" :key="index">
+      <router-link to="/shop" v-for="(shop, index) in shops" :key="index">
         <ShopItem :shop='shop'></ShopItem>
-      </div>
+      </router-link>
     </div>
     <div v-else>
       <ul>

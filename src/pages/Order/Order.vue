@@ -1,7 +1,7 @@
 <template>
   <div class="order">
     <Header>
-      <span class="center" slot="center">订单列表</span>
+      <span slot="center">订单列表</span>
     </Header>
     <div class="content">
       <img src="../../../static/img/person.png" alt="">

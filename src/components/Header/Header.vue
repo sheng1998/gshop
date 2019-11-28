@@ -1,8 +1,14 @@
 <template>
   <div class="header">
-    <slot class="left" name="left"></slot>
-    <slot class="center" name="center"></slot>
-    <slot class="right" name="right"></slot>
+    <span class="left">
+      <slot name="left"></slot>
+    </span>
+    <span class="center ellipsis">
+      <slot name="center"></slot>
+    </span>
+    <span class="right">
+      <slot name="right"></slot>
+    </span>
   </div>
 </template>
 
@@ -32,6 +38,11 @@ export default {
     color: white;
     font-weight: bolder;
     font-size: 16px;
+    a{
+      color: white;
+      font-weight: bolder;
+      font-size: 16px;
+    }
     &.left {
       position: absolute;
       left: 10px;

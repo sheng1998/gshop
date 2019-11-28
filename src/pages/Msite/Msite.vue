@@ -1,14 +1,18 @@
 <template>
   <div class="msite">
     <Header>
-      <span class="left" slot="left">
+      <router-link slot="left" to='/search'>
         <i class="iconfont icon-top-search"></i>
-      </span>
-      <span class="center ellipsis" slot="center">{{ address.city + address.name }}</span>
-      <span class="right" slot="right">
-        <a href="javascript:;">登录</a>&nbsp;|&nbsp;
-        <a href="javascript:;">注册</a>
-      </span>
+      </router-link>
+      <span slot="center">{{ address.city + address.name }}</span>
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" slot="right">
+        <span v-if="!userInfo._id">
+          登录&nbsp;|&nbsp;注册
+        </span>
+        <span v-else>
+          <i class="iconfont icon-person"></i>
+        </span>
+      </router-link>
     </Header>
     <MisteNav class="nav"></MisteNav>
     <div class="shoplist">
@@ -25,7 +29,7 @@ import {mapActions, mapState} from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['address'])
+    ...mapState(['address', 'userInfo'])
   },
 
   mounted () {

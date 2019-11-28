@@ -2,18 +2,17 @@
   直接更新state的多个方法对象
 */
 import {
-  RECEIVE_LONGITUDE_AND_LATITUDE,
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RESET_USER_INFO,
+  RECEIVE_INFO,
+  RECEIVE_RATINGS,
+  RECEIVE_GOODS
 } from './mutation-types.js'
 
 export default {
-  [RECEIVE_LONGITUDE_AND_LATITUDE] (state, {latitude, longitude}) {
-    state.latitude = latitude
-    state.longitude = longitude
-  },
-
   [RECEIVE_ADDRESS] (state, {address}) {
     state.address = address
   },
@@ -24,5 +23,25 @@ export default {
 
   [RECEIVE_SHOPS] (state, {shops}) {
     state.shops = shops
+  },
+
+  [RECEIVE_USER_INFO] (state, {userInfo}) {
+    state.userInfo = userInfo
+  },
+
+  [RESET_USER_INFO] (state) {
+    state.userInfo = {}
+  },
+
+  [RECEIVE_INFO] (state, {info}) {
+    state.info = info
+  },
+
+  [RECEIVE_RATINGS] (state, {ratings}) {
+    state.ratings = ratings
+  },
+
+  [RECEIVE_GOODS] (state, {goods}) {
+    state.goods = goods
   }
 }

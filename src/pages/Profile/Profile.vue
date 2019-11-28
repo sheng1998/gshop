@@ -1,20 +1,21 @@
 <template>
   <div class="profile">
     <Header>
-      <span class="center" slot="center">我的</span>
+      <span slot="center">我的</span>
     </Header>
     <div class="body">
-      <router-link to="/login" class="sign">
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" class="sign">
         <div class="portrait">
           <i class="iconfont icon-person"></i>
         </div>
         <div class="text">
-          <p>登录/注册</p>
+          <!-- <p></p> -->
+          <p v-if="!userInfo.phone">{{ userInfo.name || '登录/注册' }}</p>
           <p class="user">
             <span class="user-icon">
               <i class="iconfont icon-phone"></i>
             </span>
-            <span class="phone-number">暂无绑定手机号</span>
+            <span class="phone-number">{{ userInfo.phone || '暂无绑定手机号' }}</span>
           </p>
         </div>
         <div class="right">
@@ -116,13 +117,31 @@
         </ul>
       </div>
     </div>
+    <mt-button class="mt_button" type="primary" size="large" v-if="userInfo._id" @click="logout">退出登录</mt-button>
   </div>
 </template>
 
 <script>
 import Header from '../../components/Header/Header.vue'
+import {mapState} from 'vuex'
+import { MessageBox, Toast } from 'mint-ui'
 
 export default {
+  methods: {
+    logout () {
+      MessageBox.confirm('确认退出吗?').then(action => {
+        this.$store.dispatch('logout')
+        Toast('退出成功')
+        this.$router.push('/login')
+      }, action => {
+        console.log('点击了取消')
+      })
+    }
+  },
+  computed: {
+    ...mapState(['userInfo'])
+  },
+
   components: {
     Header
   }
@@ -131,7 +150,8 @@ export default {
 
 <style lang="less" scoped>
 .profile {
-  padding-top: 46px;
+  padding: 46px 0 60px 0;
+  overflow-x: hidden;
   .body {
     .sign {
       display: flex;
@@ -266,6 +286,11 @@ export default {
         }
       }
     }
+  }
+  .mt_button {
+    margin-top: 20px;
+    background-color: #02a774;
+    width: 100%;
   }
 }
 </style>

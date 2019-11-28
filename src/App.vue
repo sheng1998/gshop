@@ -7,10 +7,15 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+import {mapActions} from 'vuex'
 
 export default {
-  created () {
-    this.$store.dispatch('getlongitudeAndLatitude')
+  mounted () {
+    this.getUserInfo()
+  },
+
+  methods: {
+    ...mapActions(['getUserInfo'])
   },
 
   components: {
@@ -23,7 +28,6 @@ export default {
 .app{
   width: 100%;
   height: 100%;
-  background: #f5f5f5;
-  position: relative;
+  background-color: #f5f5f5;
 }
 </style>

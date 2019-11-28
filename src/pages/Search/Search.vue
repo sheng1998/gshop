@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <Header>
-      <span class="center" slot="center">搜索</span>
+      <span slot="center">搜索</span>
     </Header>
     <div class="search-form">
       <input name="search" type="text" placeholder="请输入商家或美食名称">
@@ -22,6 +22,9 @@ export default {
 
 <style lang="less" scoped>
 .search {
+  height: 100%;
+  overflow: hidden;
+  position: static;
   .search-form {
     padding-top: 46px;
     background-color: white;
