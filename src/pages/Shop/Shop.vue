@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="shop">
     <ShopHeader></ShopHeader>
     <div class="tab">
       <div class="tab-item">
@@ -25,12 +25,11 @@ import {mapActions} from 'vuex'
 export default {
   mounted () {
     this.getShopInfo()
-    this.getShopGoods()
-    this.getShopGoods()
+    this.getShopRatings()
   },
 
   methods: {
-    ...mapActions(['getShopInfo', 'getShopRatings', 'getShopGoods'])
+    ...mapActions(['getShopInfo', 'getShopRatings'])
   },
 
   components: {
