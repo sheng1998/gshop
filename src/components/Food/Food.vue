@@ -18,6 +18,9 @@
           <span class="now">￥{{food.price}}</span>
           <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
         </div>
+        <div class="cartcontrol-wrapper">
+          <CartControl :food="food"/>
+        </div>
       </div>
     </div>
     <div class="food-cover" @click="toggleShow"></div>
@@ -25,6 +28,8 @@
 </template>
 
 <script>
+import CartControl from '../CartControl/CartControl.vue'
+
 export default {
   data () {
     return {
@@ -36,6 +41,10 @@ export default {
     toggleShow () {
       this.isShow = !this.isShow
     }
+  },
+
+  components: {
+    CartControl
   },
 
   props: ['food']

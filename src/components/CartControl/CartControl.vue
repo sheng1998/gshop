@@ -1,10 +1,10 @@
 <template>
   <div class="cartcontrol">
     <transition name="move">
-      <div class="iconfont icon-remove_circle_outline" v-if="food.count"></div>
+      <div class="iconfont icon-remove_circle_outline" v-if="food.count" @click.stop="undataFoodCount(false)"></div>
     </transition>
     <div class="cart-count" v-if="food.count">{{food.count}}</div>
-    <div class="iconfont icon-add_circle"></div>
+    <div class="iconfont icon-add_circle" @click.stop="undataFoodCount(true)"></div>
   </div>
 </template>
 
@@ -12,6 +12,12 @@
 export default {
   props: {
     food: Object
+  },
+
+  methods: {
+    undataFoodCount (isAdd) {
+      this.$store.dispatch('undataFoodCount', {isAdd, food: this.food})
+    }
   }
 }
 </script>
@@ -54,7 +60,8 @@ export default {
     padding-top: 6px;
     line-height: 24px;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
+    font-weight: 700;
     color: rgb(147, 153, 159);
   }
 
