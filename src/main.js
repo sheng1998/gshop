@@ -10,6 +10,7 @@ import store from './store'
 
 import './mock/mockServer.js' // 加载 mockServer 即可
 import loading from './common/imgs/loading.gif'
+import './fiters' // 加载过滤器
 
 // 注册全局组件便签
 Vue.component(Button.name, Button) // mt-button

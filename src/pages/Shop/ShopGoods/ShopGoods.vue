@@ -44,7 +44,8 @@
           </li>
         </ul>
       </div>
-      <!-- <ShopCart /> -->
+
+      <ShopCart />
     </div>
 
     <!-- 菜式详情弹窗 -->

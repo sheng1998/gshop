@@ -5,7 +5,7 @@
         <div class="content-left" @click="toggleShow">
           <div class="logo-wrapper">
             <div class="logo" :class="{highlight: totalCount}">
-              <i class="iconfont icon-shopping_cart" :class="{highlight: totalCount}"></i>
+              <i class="iconfont iconshop_car" :class="{highlight: totalCount}"></i>
             </div>
             <div class="num" v-if="totalCount">{{totalCount}}</div>
           </div>
@@ -13,7 +13,9 @@
           <div class="desc">另需配送费￥{{info.deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">{{payText}}</div>
+          <div class="pay" :class="payClass">
+            {{payText}}
+          </div>
         </div>
       </div>
       <transition name="move">
@@ -26,17 +28,16 @@
             <ul>
               <li class="food" v-for="(food, index) in cartFoods" :key="index">
                 <span class="name">{{food.name}}</span>
-                <div class="price">
-                  <span>￥{{food.price}}</span>
-                </div>
+                <div class="price"><span>￥{{food.price}}</span></div>
                 <div class="cartcontrol-wrapper">
-                  <CartControl :food="food" />
+                  <CartControl :food="food"/>
                 </div>
               </li>
             </ul>
           </div>
         </div>
       </transition>
+
     </div>
     <div class="list-mask" v-show="listShow" @click="toggleShow"></div>
   </div>
@@ -45,10 +46,9 @@
 <script>
 import { MessageBox } from 'mint-ui'
 import BScroll from 'better-scroll'
-import { mapState, mapGetters } from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import CartControl from '../CartControl/CartControl.vue'
 
-/* eslint-disable no-new */
 export default {
   data () {
     return {
@@ -59,21 +59,19 @@ export default {
   computed: {
     ...mapState(['cartFoods', 'info']),
     ...mapGetters(['totalCount', 'totalPrice']),
-
     payClass () {
-      const { totalPrice } = this
-      const { minPrice } = this.info
+      const {totalPrice} = this
+      const {minPrice} = this.info
 
-      return totalPrice >= minPrice ? 'enough' : 'not-enough'
+      return totalPrice>=minPrice ? 'enough' : 'not-enough'
     },
-
     payText () {
-      const { totalPrice } = this
-      const { minPrice } = this.info
-      if (totalPrice === 0) {
+      const {totalPrice} = this
+      const {minPrice} = this.info
+      if(totalPrice===0) {
         return `￥${minPrice}元起送`
-      } else if (totalPrice < minPrice) {
-        return `还差￥${minPrice - totalPrice}元起送`
+      } else if(totalPrice<minPrice) {
+        return `还差￥${minPrice-totalPrice}元起送`
       } else {
         return '结算'
       }
@@ -81,42 +79,42 @@ export default {
 
     listShow () {
       // 如果总数量为0, 直接不显示
-      if (this.totalCount === 0) {
+      if(this.totalCount===0) {
         this.isShow = false
         return false
       }
 
-      if (this.isShow) {
+      if(this.isShow) {
         this.$nextTick(() => {
           // 实现BScroll的实例是一个单例
-          if (!this.scroll) {
+          if(!this.scroll) {
             this.scroll = new BScroll('.list-content', {
               click: true
             })
           } else {
             this.scroll.refresh() // 让滚动条刷新一下: 重新统计内容的高度
           }
+
         })
       }
+
       return this.isShow
     }
   },
 
+
   methods: {
     toggleShow () {
       // 只有当总数量大于0时切换
-      if (this.totalCount > 0) {
+      if(this.totalCount>0) {
         this.isShow = !this.isShow
       }
     },
 
     clearCart () {
-      MessageBox.confirm('确定清空购物车吗?').then(
-        action => {
-          this.$store.dispatch('clearCart')
-        },
-        () => {}
-      )
+      MessageBox.confirm('确定清空购物车吗?').then(action => {
+        this.$store.dispatch('clearCart')
+      }, () => {});
     }
   },
   components: {
@@ -132,7 +130,7 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 50;
+  z-index: 102;
   width: 100%;
   height: 48px;
 
@@ -164,12 +162,15 @@ export default {
           border-radius: 50%;
           text-align: center;
           background: #2b343c;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
           &.highlight {
             background: green;
           }
 
-          .icon-shopping_cart {
+          .iconshop_car {
             line-height: 44px;
             font-size: 24px;
             color: #80858a;
